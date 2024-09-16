@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tjualnotad;
 use App\Models\Tjualnotah;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -103,6 +104,13 @@ class JualNotaController extends Controller
      */
     public function show($id)
     {
+        $item = $this->_show($id);
+
+        return view('jualnota.form', compact('item'));
+    }
+
+    private function _show($id)
+    {
         $item = Tjualnotah::query()
             ->with([
                 'customer',
@@ -111,7 +119,7 @@ class JualNotaController extends Controller
             ])
             ->find($id);
 
-        return view('jualnota.form', compact('item'));
+        return $item;
     }
 
     /**
@@ -122,13 +130,7 @@ class JualNotaController extends Controller
      */
     public function edit($id)
     {
-        $item = Tjualnotah::query()
-            ->with([
-                'customer',
-                'workorder',
-                'jualnotaDetail.barang',
-            ])
-            ->find($id);
+        $item = $this->_show($id);
 
         return view('jualnota.form', compact('item'));
     }
@@ -179,5 +181,17 @@ class JualNotaController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function pracetak($id)
+    {
+        $item = $this->_show($id);
+        $pdf = Pdf::loadView('jualnota.pracetak', [
+                'item' => $item,
+            ])
+            ->setPaper([0, 0, 609.448, 396.85]);
+            // 215, 140
+
+        return $pdf->stream();
     }
 }

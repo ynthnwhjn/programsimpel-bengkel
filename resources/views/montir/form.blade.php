@@ -24,7 +24,7 @@
             @if($action_method != 'show')
                 <button type="submit" class="btn btn-primary">Save</button>
             @endif
-            <a href="{{ route('workorder.index') }}" class="btn btn-default">Back</a>
+            <a href="{{ route('montir.index') }}" class="btn btn-default">Back</a>
         </div>
     </form>
 </div>

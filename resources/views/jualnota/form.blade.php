@@ -6,6 +6,14 @@
 <div class="box" ng-controller="PageController">
     <div class="box-header with-border">
         <h3 class="box-title">@yield('pageTitle')</h3>
+
+        <div class="btn-group">
+            @if($action_method == 'show')
+            <a href="{{ route('jualnota.pracetak', $item) }}" target="_blank" class="btn btn-default">
+                <i class="fa fa-print"></i> Print
+            </a>
+            @endif
+        </div>
     </div>
     <form name="frm" ng-submit="save(frm, $event)">
         <div class="box-body">

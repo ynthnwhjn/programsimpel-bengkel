@@ -81,7 +81,9 @@ class MontirController extends Controller
      */
     public function edit($id)
     {
-        return view('montir.form');
+        $item = Mmontir::query()->find($id);
+
+        return view('montir.form', compact('item'));
     }
 
     /**

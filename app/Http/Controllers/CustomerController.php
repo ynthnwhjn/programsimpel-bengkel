@@ -81,7 +81,9 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
-        return view('customer.form');
+        $item = Mcustomer::query()->find($id);
+
+        return view('customer.form', compact('item'));
     }
 
     /**

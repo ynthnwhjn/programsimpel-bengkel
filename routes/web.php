@@ -21,6 +21,9 @@ Route::group(['middleware' => ['admin', 'auth']], function() {
     Route::resource('montir', \App\Http\Controllers\MontirController::class);
     Route::resource('customer', \App\Http\Controllers\CustomerController::class);
     Route::resource('barang', \App\Http\Controllers\BarangController::class);
+
+    Route::get('jualnota/{nomor}/pracetak', [\App\Http\Controllers\JualNotaController::class, 'pracetak'])
+        ->name('jualnota.pracetak');
     Route::resource('jualnota', \App\Http\Controllers\JualNotaController::class);
 
     Route::get('/', function () {

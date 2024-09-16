@@ -59,7 +59,7 @@
                     .withOption('width', 90)
                     .withOption('class', 'dt-center')
                     .renderWith(function (data, type, row, meta) {
-                        return '<a href="'+ route('barang.edit', row) +'">Edit</a>';
+                        return '<a href="'+ route('montir.edit', row) +'">Edit</a>';
                     }),
             ];
         }
