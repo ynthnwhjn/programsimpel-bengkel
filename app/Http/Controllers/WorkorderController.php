@@ -46,9 +46,7 @@ class WorkorderController extends Controller
      */
     public function create()
     {
-        $item = new Tworkorderh();
-
-        return view('workorder.form', compact('item'));
+        return view('workorder.form');
     }
 
     /**

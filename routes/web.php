@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['middleware' => ['admin', 'auth']], function() {
+    Route::get('laporan_ringkasan_stok', [\App\Http\Controllers\LaporanRingkasanStokController::class, 'index'])
+        ->name('laporan_ringkasan_stok');
+
     Route::post('workorder/approve', [\App\Http\Controllers\WorkorderController::class, 'approve'])
         ->name('workorder.approve');
     Route::resource('workorder', \App\Http\Controllers\WorkorderController::class);
@@ -21,6 +24,7 @@ Route::group(['middleware' => ['admin', 'auth']], function() {
     Route::resource('montir', \App\Http\Controllers\MontirController::class);
     Route::resource('customer', \App\Http\Controllers\CustomerController::class);
     Route::resource('barang', \App\Http\Controllers\BarangController::class);
+    Route::resource('penerimaan_barang', \App\Http\Controllers\PenerimaanBarangController::class);
 
     Route::get('jualnota/{nomor}/pracetak', [\App\Http\Controllers\JualNotaController::class, 'pracetak'])
         ->name('jualnota.pracetak');

@@ -1,6 +1,6 @@
 @extends('ps::layouts.admin')
 
-@section('pageTitle', 'Perintah kerja')
+@section('pageTitle', 'Penerimaan Barang')
 
 @section('content')
 <div class="box" ng-controller="PageController">
@@ -8,7 +8,7 @@
         <h3 class="box-title">@yield('pageTitle')</h3>
 
         <div class="btn-group">
-            <a href="{{ route('workorder.create') }}" class="btn btn-default">Create</a>
+            <a href="{{ route('penerimaan_barang.create') }}" class="btn btn-default">Create</a>
         </div>
     </div>
     <div class="box-body">
@@ -34,7 +34,7 @@
                     //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                     // },
                     dataSrc: 'data',
-                    url: route('workorder.index'),
+                    url: route('penerimaan_barang.index'),
                     // data: function (d) {
                     //     d = $scope.filter;
                     //     console.log(d)
@@ -56,20 +56,9 @@
                     }),
                 DTColumnBuilder.newColumn('kode').withTitle('Kode'),
                 DTColumnBuilder.newColumn('tanggal').withTitle('Tanggal'),
-                DTColumnBuilder.newColumn('montir').withTitle('Montir')
+                DTColumnBuilder.newColumn('gudang').withTitle('Gudang')
                     .renderWith(function (data, type, row, meta) {
                         return data ? data.nama : '';
-                    }),
-                DTColumnBuilder.newColumn('customer').withTitle('Customer')
-                    .renderWith(function (data, type, row, meta) {
-                        return data ? data.nama : '';
-                    }),
-                DTColumnBuilder.newColumn('jualnota').withTitle('Penjualan?')
-                    .withOption('width', 100)
-                    .withOption('class', 'dt-center')
-                    .renderWith(function (data, type, row, meta) {
-                        console.log(data)
-                        return data ? '<i class="fa fa-check"></i>' : '';
                     }),
                 DTColumnBuilder.newColumn(null).withTitle('<i class="fa fa-bars"></i>')
                     .withOption('width', 90)
@@ -77,11 +66,7 @@
                     .renderWith(function (data, type, row, meta) {
                         console.log(row)
 
-                        if(row.jualnota) {
-                            return '<a href="'+ route('workorder.show', row) +'">View</a>';
-                        }
-
-                        return '<a href="'+ route('workorder.edit', row) +'">Edit</a>';
+                        return '<a href="'+ route('penerimaan_barang.edit', row) +'">Edit</a>';
                     }),
             ];
         }

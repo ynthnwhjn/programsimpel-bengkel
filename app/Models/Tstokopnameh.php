@@ -5,38 +5,27 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tjualnotah extends Model
+class Tstokopnameh extends Model
 {
     use HasFactory;
 
-    protected $table = 'tjualnotah';
+    protected $table = 'tstokopnameh';
     protected $guarded = [
-        'workorder',
-        'customer',
-        'jualnota_detail',
+        'gudang',
+        'stok_opname_detail',
     ];
-
-    public function workorder()
-    {
-        return $this->hasOne(Tworkorderh::class, 'id', 'workorderh_id');
-    }
 
     public function gudang()
     {
         return $this->hasOne(Mgudang::class, 'id', 'gudang_id');
     }
 
-    public function customer()
+    public function stokOpnameDetail()
     {
-        return $this->hasOne(Mcustomer::class, 'id', 'customer_id');
+        return $this->hasMany(Tstokopnamed::class, 'stokopnameh_id', 'id');
     }
 
-    public function jualnotaDetail()
-    {
-        return $this->hasMany(Tjualnotad::class, 'jualnotah_id', 'id');
-    }
-
-    public static function generateKode($prefix)
+    public static function generateKode($prefix, $jenis)
     {
         $kode = $prefix;
         $result = static::query()->where('kode', 'LIKE', $prefix . '%')->get();

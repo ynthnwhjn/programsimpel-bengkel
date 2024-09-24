@@ -15,7 +15,6 @@
         <table class="table table-hover" datatable dt-options="dtOptions" dt-columns="dtColumns" dt-instance="dtInstance"></table>
     </div>
 </div>
-@endsection
 
 @push('scripts')
 <script type="text/javascript">
@@ -66,3 +65,5 @@
     })();
 </script>
 @endpush
+
+@endsection

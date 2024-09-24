@@ -7,16 +7,16 @@
     <div class="box-header with-border">
         <h3 class="box-title">
             @yield('pageTitle')
-            @if($item->jualnota)
+            @isset($item->jualnota)
                 <div class="label bg-green" style="margin-left: 5px;">
                     <i class="fa fa-check-circle"></i>
                     <span style="margin-left: 5px;">Approved</span>
                 </div>
-            @endif
+            @endisset
         </h3>
 
         <div class="btn-group">
-            @if(!$item->jualnota && $action_method != 'create')
+            @if(!isset($item->jualnota) && $action_method != 'create')
                 <button type="button" ng-click="approveWorkOrder($event)" class="btn btn-success"><i class="fa fa-check-circle"></i> Approve</button>
             @endif
         </div>

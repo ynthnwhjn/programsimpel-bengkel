@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tjualnotad;
 use App\Models\Tjualnotah;
-use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Tlaporanstok;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -47,9 +47,7 @@ class JualNotaController extends Controller
      */
     public function create()
     {
-        $item = new Tjualnotah();
-
-        return view('jualnota.form', compact('item'));
+        return view('jualnota.form');
     }
 
     /**
@@ -78,6 +76,18 @@ class JualNotaController extends Controller
             foreach ($request->input('jualnota_detail', []) as $row) {
                 $item_detail = new Tjualnotad($row);
                 $item->jualnotaDetail()->save($item_detail);
+
+                if(isset($row['barang']) && $row['barang']['is_jasa'] == 0) {
+                    $stok = new Tlaporanstok([
+                        'jualnotah_id' => $item->id,
+                        'jualnotad_id' => $item_detail->id,
+                        'gudang_id' => $item->gudang_id,
+                        'barang_id' => $item_detail->barang_id,
+                        'jumlah' => floatval($item_detail->jumlah) * -1,
+                        'tanggal' => Carbon::now(),
+                    ]);
+                    $stok->save();
+                }
             }
 
             $redirect_to = route('jualnota.show', $item);
@@ -86,6 +96,7 @@ class JualNotaController extends Controller
 
             return response()->json([
                 'redirect_to' => $redirect_to,
+                '_all' => $request->all(),
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -113,6 +124,7 @@ class JualNotaController extends Controller
     {
         $item = Tjualnotah::query()
             ->with([
+                'gudang',
                 'customer',
                 'workorder',
                 'jualnotaDetail.barang',
@@ -151,9 +163,25 @@ class JualNotaController extends Controller
             $item->update($request->all());
 
             $item->jualnotaDetail()->delete();
+            Tlaporanstok::query()
+                ->where('jualnotah_id', $id)
+                ->delete();
+
             foreach ($request->input('jualnota_detail', []) as $row) {
                 $item_detail = new Tjualnotad($row);
                 $item->jualnotaDetail()->save($item_detail);
+
+                if(isset($row['barang']) && $row['barang']['is_jasa'] == 0) {
+                    $stok = new Tlaporanstok([
+                        'jualnotah_id' => $item->id,
+                        'jualnotad_id' => $item_detail->id,
+                        'gudang_id' => $item->gudang_id,
+                        'barang_id' => $item_detail->barang_id,
+                        'jumlah' => floatval($item_detail->jumlah) * -1,
+                        'tanggal' => Carbon::now(),
+                    ]);
+                    $stok->save();
+                }
             }
 
             $redirect_to = route('jualnota.show', $item);
@@ -162,6 +190,7 @@ class JualNotaController extends Controller
 
             return response()->json([
                 'redirect_to' => $redirect_to,
+                '_all' => $request->all(),
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -183,15 +212,25 @@ class JualNotaController extends Controller
         //
     }
 
+    // ukuran kertas pakai `point`, search google mm to point
+    // pakai:
+    // https://cssunitconverter.vercel.app/mm-to-pt
     public function pracetak($id)
     {
         $item = $this->_show($id);
-        $pdf = Pdf::loadView('jualnota.pracetak', [
-                'item' => $item,
-            ])
-            ->setPaper([0, 0, 609.448, 396.85]);
-            // 215, 140
 
-        return $pdf->stream();
+        // 215, 140
+        $pdf = new \Mpdf\Mpdf([
+            'format' => [215, 140],
+        ]);
+
+        $html_output = view('jualnota.pracetak', compact('item'));
+        $pdf->WriteHTML($html_output);
+        $pdf->Output();
+
+        // return $pdf->stream();
+        // return view('jualnota.pracetak', [
+        //     'item' => $item,
+        // ]);
     }
 }

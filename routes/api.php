@@ -22,4 +22,5 @@ Route::group(['prefix' => 'browse'], function() {
     Route::get('montir', [\App\Http\Controllers\Api\BrowseController::class, 'montir']);
     Route::get('customer', [\App\Http\Controllers\Api\BrowseController::class, 'customer']);
     Route::get('barang', [\App\Http\Controllers\Api\BrowseController::class, 'barang']);
+    Route::get('gudang', [\App\Http\Controllers\Api\BrowseController::class, 'gudang']);
 });

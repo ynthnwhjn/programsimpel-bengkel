@@ -1,0 +1,53 @@
+@page {
+    margin: 10mm;
+}
+
+body {
+    font-family: Tahoma;
+    margin: 0;
+    padding: 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th {
+    font-weight: normal;
+}
+
+table th,
+table td {
+    padding: 2px 5px;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.table-bordered th {
+    border: 1px solid #000;
+}
+
+.table-bordered tbody td {
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+}
+
+.border-left {
+    border-left: 1px solid #000;
+}
+
+.border-right {
+    border-right: 1px solid #000;
+}
+
+.border-bottom,
+.border-bottom td {
+    border-bottom: 1px solid #000;
+}
